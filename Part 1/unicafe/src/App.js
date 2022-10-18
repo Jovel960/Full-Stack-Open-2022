@@ -12,16 +12,21 @@ const Statistics = ({
   avgStat,
   posStat,
 }) => {
-  return (
-    <div>
-      <h3 valueOfRecord={`bad ${goodStat} `}>{`good ${goodStat}`}</h3>
-      <h3 valueOfRecord={`bad ${neutralStat} `}>{`neutral ${neutralStat}`}</h3>
-      <h3 valueOfRecord={`bad ${badStat} `}>{`bad ${badStat}`}</h3>
-      <h3 valueOfRecord={`sum ${sumStat} `}>{`sum ${sumStat}`}</h3>
-      <h3 valueOfRecord={`avg ${avgStat} `}>{`average ${avgStat}`}</h3>
-      <h3 valueOfRecord={`positive ${posStat} %`}>{`positive ${posStat} %`}</h3>
-    </div>
-  );
+  console.log(sumStat);
+  if (!sumStat) {
+    return <h3>No feedback given</h3>;
+  } else {
+    return (
+      <div>
+        <h3>{`good ${goodStat}`}</h3>
+        <h3>{`neutral ${neutralStat}`}</h3>
+        <h3>{`bad ${badStat}`}</h3>
+        <h3>{`sum ${sumStat}`}</h3>
+        <h3>{`average ${avgStat}`}</h3>
+        <h3>{`positive ${posStat} %`}</h3>
+      </div>
+    );
+  }
 };
 
 const App = () => {
@@ -76,14 +81,16 @@ const App = () => {
       <div>
         <h1>Statistics</h1>
       </div>
-      <Statistics
-        goodStat={good}
-        neutralStat={neutral}
-        badStat={bad}
-        sumStat={sum}
-        avgStat={avg}
-        posStat={pos}
-      />
+      <div>
+        <Statistics
+          goodStat={good}
+          neutralStat={neutral}
+          badStat={bad}
+          sumStat={sum}
+          avgStat={avg}
+          posStat={pos}
+        />
+      </div>
     </div>
   );
 };
