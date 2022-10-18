@@ -1,6 +1,8 @@
 import { useState } from "react";
 
-const Button = ({ onClick, value }) => <button onClick={onClick}>{value}</button>;
+const Button = ({ onClick, value }) => (
+  <button onClick={onClick}>{value}</button>
+);
 
 const Statistics = ({
   goodStat,
@@ -15,19 +17,54 @@ const Statistics = ({
     return <h3>No feedback given</h3>;
   } else {
     return (
-      <div>
-        <StatisticLine text='good' value={goodStat} />
-        <StatisticLine text='neutral' value={neutralStat} />
-        <StatisticLine text='bad' value={badStat} />
-        <StatisticLine text='sum' value={sumStat} />
-        <StatisticLine text='average' value={avgStat} />
-        <StatisticLine text='positive' value={`${posStat} %`} />
-      </div>
+      <table>
+        <tbody>
+          <tr>
+            <td>
+              <StatisticLine text="good" value={goodStat} />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <StatisticLine text="neutral" value={neutralStat} />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <StatisticLine text="bad" value={badStat} />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <StatisticLine text="all" value={sumStat} />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <StatisticLine text="average" value={avgStat} />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <StatisticLine text="positive" value={`${posStat} %`} />
+            </td>
+          </tr>
+        </tbody>
+      </table>
     );
   }
 };
 
-const StatisticLine = ({text, value}) => <h3>{text} {value}</h3>
+const StatisticLine = ({ text, value }) => {
+  const mystyle = {
+    margin: 0,
+  };
+  return (
+    <h3 style={mystyle}>
+      {text} {value}
+    </h3>
+  );
+};
 
 const App = () => {
   const [pos, setPositive] = useState(0);
