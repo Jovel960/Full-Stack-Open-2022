@@ -1,8 +1,6 @@
 import { useState } from "react";
 
-const Button = ({ onClick, value }) => {
-  return <button onClick={onClick}>{value}</button>;
-};
+const Button = ({ onClick, value }) => <button onClick={onClick}>{value}</button>;
 
 const Statistics = ({
   goodStat,
@@ -12,22 +10,24 @@ const Statistics = ({
   avgStat,
   posStat,
 }) => {
-  console.log(sumStat);
+  //console.log(sumStat);
   if (!sumStat) {
     return <h3>No feedback given</h3>;
   } else {
     return (
       <div>
-        <h3>{`good ${goodStat}`}</h3>
-        <h3>{`neutral ${neutralStat}`}</h3>
-        <h3>{`bad ${badStat}`}</h3>
-        <h3>{`sum ${sumStat}`}</h3>
-        <h3>{`average ${avgStat}`}</h3>
-        <h3>{`positive ${posStat} %`}</h3>
+        <StatisticLine text='good' value={goodStat} />
+        <StatisticLine text='neutral' value={neutralStat} />
+        <StatisticLine text='bad' value={badStat} />
+        <StatisticLine text='sum' value={sumStat} />
+        <StatisticLine text='average' value={avgStat} />
+        <StatisticLine text='positive' value={`${posStat} %`} />
       </div>
     );
   }
 };
+
+const StatisticLine = ({text, value}) => <h3>{text} {value}</h3>
 
 const App = () => {
   const [pos, setPositive] = useState(0);
