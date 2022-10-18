@@ -4,9 +4,24 @@ const Button = ({ onClick, value }) => {
   return <button onClick={onClick}>{value}</button>;
 };
 
-const Display = ({ valueOfRecord }) => {
-  //console.log(valueOfRecord);
-  return <h3>{valueOfRecord}</h3>;
+const Statistics = ({
+  goodStat,
+  neutralStat,
+  badStat,
+  sumStat,
+  avgStat,
+  posStat,
+}) => {
+  return (
+    <div>
+      <h3 valueOfRecord={`bad ${goodStat} `}>{`good ${goodStat}`}</h3>
+      <h3 valueOfRecord={`bad ${neutralStat} `}>{`neutral ${neutralStat}`}</h3>
+      <h3 valueOfRecord={`bad ${badStat} `}>{`bad ${badStat}`}</h3>
+      <h3 valueOfRecord={`sum ${sumStat} `}>{`sum ${sumStat}`}</h3>
+      <h3 valueOfRecord={`avg ${avgStat} `}>{`average ${avgStat}`}</h3>
+      <h3 valueOfRecord={`positive ${posStat} %`}>{`positive ${posStat} %`}</h3>
+    </div>
+  );
 };
 
 const App = () => {
@@ -61,14 +76,14 @@ const App = () => {
       <div>
         <h1>Statistics</h1>
       </div>
-      <div>
-        <Display valueOfRecord={`good ${good}`} />
-        <Display valueOfRecord={`neutral ${neutral}`} />
-        <Display valueOfRecord={`bad ${bad} `} />
-        <Display valueOfRecord={`sum ${sum} `} />
-        <Display valueOfRecord={`avg ${avg} `} />
-        <Display valueOfRecord={`positive ${pos} %`} />
-      </div>
+      <Statistics
+        goodStat={good}
+        neutralStat={neutral}
+        badStat={bad}
+        sumStat={sum}
+        avgStat={avg}
+        posStat={pos}
+      />
     </div>
   );
 };
