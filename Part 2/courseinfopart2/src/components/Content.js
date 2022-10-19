@@ -1,11 +1,10 @@
-import React from 'react'
-import Part from './Part';
+import React from "react";
+import Part from "./Part";
 
-const Content = ({ part }) => 
+const Content = ({ part }) => (
   <>
-    <Part
-      part={part} 
-    />   
+    <Part part={part} />
   </>
+);
 
 export default Content;
