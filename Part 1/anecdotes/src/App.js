@@ -15,6 +15,8 @@ const App = () => {
   ];
 
   const [arrVote, setArrVote] = useState(new Array(anecdotes.length).fill(0));
+  const [mostVotedAnecdote, setMostVotedAnecdote] = useState("");
+  const [maxVote, setMaxVote] = useState(0);
 
   const handleNext = () => {
     const len = anecdotes.length;
@@ -26,17 +28,26 @@ const App = () => {
   const handleVote = () => {
     const arr = [...arrVote];
     arr[selected] += 1;
-    //console.log(arr)
     setArrVote(arr);
-    //console.log(arrVote);
+    const maxVoteRef = Math.max(...arr);
+    const refAnecdote = arr.indexOf(maxVoteRef);
+    console.log(refAnecdote)
+    setMostVotedAnecdote(anecdotes[refAnecdote])
+    setMaxVote(maxVoteRef)
   };
 
   return (
     <div>
+      <h2>Anecdote of the day:</h2>
       <div>{anecdotes[selected]}</div>
       <div>Has {arrVote[selected]} votes</div>
       <Button onClick={handleVote} text="vote" />
       <Button onClick={handleNext} text="anecdote" />
+      <div>
+        <h2>Anecdote with most votes:</h2>
+        <div>{mostVotedAnecdote}</div>
+        <div>{!maxVote ? "No votes yet" : maxVote}</div>
+      </div>
     </div>
   );
 };
