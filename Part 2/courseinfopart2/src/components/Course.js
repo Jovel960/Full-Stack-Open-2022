@@ -4,7 +4,7 @@ import Header from "./Header";
 import Sum from "./Sum";
 
 const Course = ({ parts, header }) => {
-  //console.log(parts, header);
+  console.log(parts, header);
   return (
     <>
       <Header course={header} />
