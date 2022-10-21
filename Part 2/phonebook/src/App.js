@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Name from "./components/Name";
-
+//Commit task 2.6
 const App = () => {
   const id = 0;
   const [names, setNames] = useState([]);
