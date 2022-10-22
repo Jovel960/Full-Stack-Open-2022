@@ -1,17 +1,21 @@
 import { useState } from "react";
 import Name from "./components/Name";
-//Commit task 2.6
 const App = () => {
-  const id = 0;
   const [names, setNames] = useState([]);
   const [name, setName] = useState("");
   const handleSubmit = (event) => {
     event.preventDefault();
     //console.log(event.target);
-    const newName = { nickname: name, id: id + 1 };
-    setNames(names.concat(newName));
-    setName("");
-    //console.log(names);
+    let newName;
+    names.length === 0
+      ? (newName = { nickname: name, id: 1 })
+      : (newName = { nickname: name, id: names[names.length - 1].id + 1 });
+    const isFound = names.find((name) => name.nickname === newName.nickname);
+    //console.log(isFound);
+    isFound === undefined
+      ? setNames(names.concat(newName)) && setName("")
+      : alert(`${newName.nickname} is already added to phonebook`);
+    console.log(names);
   };
   const handleChange = (event) => {
     //console.log("this is event", event.target.value);
@@ -28,9 +32,9 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
       <div>
-          {names.map((element) => (
-            <Name name={element.nickname} key={name.id} />
-          ))}
+        {names.map((element) => (
+          <Name name={element.nickname} key={element.id} />
+        ))}
       </div>
     </div>
   );
