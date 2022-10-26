@@ -1,12 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Contact from "./components/Contact";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
+import axios from "axios";
 const App = () => {
   const [contacts, setContacts] = useState([]);
   const [contact, setContact] = useState({ name: "", number: "", id: null });
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState(false);
+
+  useEffect(()=>{
+    console.log("effect");
+    axios.get("http://localhost:3001/persons").then(res => {
+      //console.log(res.data);
+      setContacts(res.data)
+  }).catch(err => console.log(err))
+},[])
+      
+
 
   const listToShow = filter
     ? contacts.filter((element) => element.name.includes(search))
@@ -43,7 +54,7 @@ const App = () => {
     setContact(refContact);
   };
   const handleNumberChange = (event) => {
-    console.log("this is numebr", event.target.value);
+    //console.log("this is numebr", event.target.value);
     let refContact = {
       name: contact.name,
       number: event.target.value,
