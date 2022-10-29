@@ -9,15 +9,16 @@ const App = () => {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState(false);
 
-  useEffect(()=>{
+  useEffect(() => {
     console.log("effect");
-    axios.get("http://localhost:3001/persons").then(res => {
-      //console.log(res.data);
-      setContacts(res.data)
-  }).catch(err => console.log(err))
-},[])
-      
-
+    axios
+      .get("http://localhost:3001/persons")
+      .then((res) => {
+        //console.log(res.data);
+        setContacts(res.data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   const listToShow = filter
     ? contacts.filter((element) => element.name.includes(search))
@@ -37,11 +38,15 @@ const App = () => {
     const isFound = contacts.find(
       (contactE) => contactE.number === newContact.number
     );
-    //console.log(isFound);
-    isFound === undefined
-      ? setContacts(contacts.concat(newContact))
-      : alert(`${newContact.number} is already added to phonebook`);
-    //console.log(contact, contacts)
+    if (!isFound) {
+      axios
+        .post("http://localhost:3001/persons", newContact)
+        .then((res) => setContacts(contacts.concat(newContact)))
+        .catch((err) => console.log(err));
+    } else {
+      alert(`${newContact.number} is already added to phonebook`);
+    }
+
     setContact({ name: "", number: "", id: null });
   };
   const handleNameChange = (event) => {
@@ -77,7 +82,12 @@ const App = () => {
       <Filter handleFilter={handleFilter} search={search} />
       <br />
       <h2>Add a new</h2>
-      <PersonForm contact={contact} handleSubmit={handleSubmit} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange} />
+      <PersonForm
+        contact={contact}
+        handleSubmit={handleSubmit}
+        handleNameChange={handleNameChange}
+        handleNumberChange={handleNumberChange}
+      />
       <h2>Numbers and names</h2>
       <div>
         {listToShow.map((element) => (
