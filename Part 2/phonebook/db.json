@@ -7,7 +7,7 @@
     },
     {
       "name": "Ada Lovelace",
-      "number": "39-55-532353",
+      "number": "40-66-464658",
       "id": 2
     },
     {
@@ -29,6 +29,11 @@
       "name": "Tony Soprano",
       "number": "+854-88-63245",
       "id": 6
+    },
+    {
+      "name": "O'malli",
+      "number": "033-444444",
+      "id": 7
     }
   ]
 }

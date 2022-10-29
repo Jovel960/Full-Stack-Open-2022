@@ -68,10 +68,8 @@ const App = () => {
             )
           );
       }
-      refChange = null;
-      return;
     }
-    if (!isFound) {
+    if (!isFound && !isExists) {
       backEndServices
         .addContact("http://localhost:3001/persons", newContact)
         .then((person) => setContacts(contacts.concat(person)));
@@ -79,7 +77,7 @@ const App = () => {
       //   .post("http://localhost:3001/persons", newContact)
       //   .then((res) => setContacts(contacts.concat(newContact)))
       //   .catch((err) => console.log(err));
-    } else {
+    } else if(isFound){
       alert(`${newContact.number} is already added to phonebook`);
     }
     setContact({ name: "", number: "", id: null });
