@@ -32,6 +32,7 @@ const App = () => {
     event.preventDefault();
     //console.log(event.target);
     let newContact;
+    let foundC;
     contacts.length === 0
       ? (newContact = { name: contact.name, number: contact.number, id: 0 })
       : (newContact = {
@@ -42,9 +43,37 @@ const App = () => {
     const isFound = contacts.find(
       (contactE) => contactE.number === newContact.number
     );
+    let isExists = contacts.find(
+      (contactE) => contactE.name === newContact.name
+    );
+
+    if (isExists) {
+      let refChange = contacts.filter(
+        (contactE) => contactE.name === newContact.name
+      );
+      console.log(refChange);
+      if (
+        window.confirm(
+          `${refChange[0].name} is already added to phonebook, replace the old number with the new one ?`
+        )
+      ) {
+        refChange[0].number = newContact.number;
+        backEndServices
+          .updateContact("http://localhost:3001/persons", refChange[0])
+          .then((updatedContact) =>
+            setContacts(
+              contacts.map((contact) =>
+                contact.id !== updatedContact.id ? contact : updatedContact
+              )
+            )
+          );
+      }
+      refChange = null;
+      return;
+    }
     if (!isFound) {
       backEndServices
-        .addPerson("http://localhost:3001/persons", newContact)
+        .addContact("http://localhost:3001/persons", newContact)
         .then((person) => setContacts(contacts.concat(person)));
       // axios
       //   .post("http://localhost:3001/persons", newContact)
@@ -53,7 +82,6 @@ const App = () => {
     } else {
       alert(`${newContact.number} is already added to phonebook`);
     }
-
     setContact({ name: "", number: "", id: null });
   };
   const handleNameChange = (event) => {
@@ -83,12 +111,12 @@ const App = () => {
       setFilter(false);
     }
   };
-  const handleDelete = (name,id) => {
+  const handleDelete = (name, id) => {
     //console.log(id)
-    const newList = contacts.filter((contact) => contact.id !== id )
+    const newList = contacts.filter((contact) => contact.id !== id);
     if (window.confirm(`Do you really want to delete ${name} from the list?`)) {
       backEndServices
-        .deletePerson("http://localhost:3001/persons", id)
+        .deleteContact("http://localhost:3001/persons", id)
         .then((res) => setContacts(newList));
     }
   };

@@ -5,15 +5,20 @@ const getAll = (url) => {
    return request.then(res=>res.data)
 }
 
-const addPerson = (url, person) => {
+const addContact = (url, person) => {
     const request = axios.post(url, person)
     return request.then(res => res.data)
 }
 
-const deletePerson = (url, id) => {
+const deleteContact = (url, id) => {
     const request = axios.delete(`${url}/${id}`)
     return request.then(res => res)
 
  }
 
-export default {addPerson, getAll, deletePerson};
+ const updateContact = (url, person) => {
+    const request = axios.put(`${url}/${person.id}`, person)
+    return request.then(res => res.data)
+ }
+
+export default {addContact, getAll, deleteContact, updateContact};
