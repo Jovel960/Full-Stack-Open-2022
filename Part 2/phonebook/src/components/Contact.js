@@ -1,7 +1,7 @@
-const Contact = ({ name , number}) => {
+const Contact = ({ name , number, id, handleDelete}) => {
   //console.log(name, number)
     return (
-      <h3>{`Name: ${name} Number: ${number}`} </h3>
+      <h3>{`Name: ${name} Number: ${number}`} <button onClick={() => handleDelete(name,id)}>Delete person</button></h3>
     )
   }
   

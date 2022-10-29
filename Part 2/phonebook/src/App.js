@@ -3,7 +3,7 @@ import Contact from "./components/Contact";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import axios from "axios";
-import personServices from "./Services/Contacts";
+import backEndServices from "./Services/Contacts";
 const App = () => {
   const [contacts, setContacts] = useState([]);
   const [contact, setContact] = useState({ name: "", number: "", id: null });
@@ -11,8 +11,8 @@ const App = () => {
   const [filter, setFilter] = useState(false);
 
   useEffect(() => {
-    console.log("effect");
-    personServices
+    //console.log("effect");
+    backEndServices
       .getAll("http://localhost:3001/persons")
       .then((contacts) => setContacts(contacts));
     // axios
@@ -43,7 +43,7 @@ const App = () => {
       (contactE) => contactE.number === newContact.number
     );
     if (!isFound) {
-      personServices
+      backEndServices
         .addPerson("http://localhost:3001/persons", newContact)
         .then((person) => setContacts(contacts.concat(person)));
       // axios
@@ -83,6 +83,15 @@ const App = () => {
       setFilter(false);
     }
   };
+  const handleDelete = (name,id) => {
+    //console.log(id)
+    const newList = contacts.filter((contact) => contact.id !== id )
+    if (window.confirm(`Do you really want to delete ${name} from the list?`)) {
+      backEndServices
+        .deletePerson("http://localhost:3001/persons", id)
+        .then((res) => setContacts(newList));
+    }
+  };
   return (
     <div>
       <h2>Phonebook</h2>
@@ -102,6 +111,8 @@ const App = () => {
             name={element.name}
             number={element.number}
             key={element.id}
+            handleDelete={handleDelete}
+            id={element.id}
           />
         ))}
       </div>
