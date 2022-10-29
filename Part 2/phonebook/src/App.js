@@ -3,6 +3,7 @@ import Contact from "./components/Contact";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import axios from "axios";
+import personServices from "./Services/Contacts";
 const App = () => {
   const [contacts, setContacts] = useState([]);
   const [contact, setContact] = useState({ name: "", number: "", id: null });
@@ -11,13 +12,16 @@ const App = () => {
 
   useEffect(() => {
     console.log("effect");
-    axios
-      .get("http://localhost:3001/persons")
-      .then((res) => {
-        //console.log(res.data);
-        setContacts(res.data);
-      })
-      .catch((err) => console.log(err));
+    personServices
+      .getAll("http://localhost:3001/persons")
+      .then((contacts) => setContacts(contacts));
+    // axios
+    //   .get("http://localhost:3001/persons")
+    //   .then((res) => {
+    //     //console.log(res.data);
+    //     setContacts(res.data);
+    //   })
+    //   .catch((err) => console.log(err));
   }, []);
 
   const listToShow = filter
@@ -39,10 +43,13 @@ const App = () => {
       (contactE) => contactE.number === newContact.number
     );
     if (!isFound) {
-      axios
-        .post("http://localhost:3001/persons", newContact)
-        .then((res) => setContacts(contacts.concat(newContact)))
-        .catch((err) => console.log(err));
+      personServices
+        .addPerson("http://localhost:3001/persons", newContact)
+        .then((person) => setContacts(contacts.concat(person)));
+      // axios
+      //   .post("http://localhost:3001/persons", newContact)
+      //   .then((res) => setContacts(contacts.concat(newContact)))
+      //   .catch((err) => console.log(err));
     } else {
       alert(`${newContact.number} is already added to phonebook`);
     }
