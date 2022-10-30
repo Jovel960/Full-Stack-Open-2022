@@ -16,6 +16,15 @@ h2{
     border-radius: 5px;
     margin-bottom: 10px;
     padding: 10px;
+}
 
-
+.errorMessage{
+    background-color: lightgray;
+    font-size: 30px;
+    font-family: italic;
+    color:red;
+    padding: 10px;
+    border-radius: 5px;
+    border-style: solid;
+    margin-bottom: 10px;
 }

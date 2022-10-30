@@ -11,9 +11,7 @@ const addContact = (url, person) => {
 }
 
 const deleteContact = (url, id) => {
-    const request = axios.delete(`${url}/${id}`)
-    return request.then(res => res)
-
+   return axios.delete(`${url}/${id}`) 
  }
 
  const updateContact = (url, person) => {

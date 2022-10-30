@@ -11,6 +11,7 @@ const App = () => {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     //console.log("effect");
@@ -123,13 +124,22 @@ const App = () => {
     if (window.confirm(`Do you really want to delete ${name} from the list?`)) {
       backEndServices
         .deleteContact("http://localhost:3001/persons", id)
-        .then((res) => setContacts(newList));
+        .then((res) => setContacts(newList))
+        .catch((err) => {
+          setErrorMessage(
+            `Information of ${name} has already been removed from the server`
+          );
+          setTimeout(() => {
+            setErrorMessage("")
+          }, 5000);
+        });
     }
   };
   return (
     <div>
       <h1>Phonebook</h1>
-      <Notification message={successMessage} />
+      <Notification message={successMessage} flag={true} />
+      <Notification message={errorMessage} flag={false} />
       <Filter handleFilter={handleFilter} search={search} />
       <br />
       <h2>Add a new</h2>
