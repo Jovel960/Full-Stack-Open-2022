@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Contact from "./components/Contact";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
+import Notification from "./components/Notilfication";
 import axios from "axios";
 import backEndServices from "./Services/Contacts";
 const App = () => {
@@ -9,6 +10,7 @@ const App = () => {
   const [contact, setContact] = useState({ name: "", number: "", id: null });
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
     //console.log("effect");
@@ -72,12 +74,18 @@ const App = () => {
     if (!isFound && !isExists) {
       backEndServices
         .addContact("http://localhost:3001/persons", newContact)
-        .then((person) => setContacts(contacts.concat(person)));
+        .then((person) => {
+          setContacts(contacts.concat(person));
+          setSuccessMessage(`added ${newContact.name} to the phonebook`);
+          setTimeout(() => {
+            setSuccessMessage();
+          }, 5000);
+        });
       // axios
       //   .post("http://localhost:3001/persons", newContact)
       //   .then((res) => setContacts(contacts.concat(newContact)))
       //   .catch((err) => console.log(err));
-    } else if(isFound){
+    } else if (isFound) {
       alert(`${newContact.number} is already added to phonebook`);
     }
     setContact({ name: "", number: "", id: null });
@@ -120,7 +128,8 @@ const App = () => {
   };
   return (
     <div>
-      <h2>Phonebook</h2>
+      <h1>Phonebook</h1>
+      <Notification message={successMessage} />
       <Filter handleFilter={handleFilter} search={search} />
       <br />
       <h2>Add a new</h2>
