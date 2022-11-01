@@ -31,11 +31,11 @@ const generateId = () => {
   return maxId + 1;
 };
 
-app.get("/api/contacts", (request, response) => {
+app.get("/api/persons", (request, response) => {
   response.json(contacts);
 });
 
-app.get("/api/contacts/:id", (request, response) => {
+app.get("/api/persons/:id", (request, response) => {
   let id = Number(request.params.id);
   const contact = contacts.find((contact) => contact.id === id);
   if (contact) {
@@ -46,7 +46,7 @@ app.get("/api/contacts/:id", (request, response) => {
   }
 });
 
-app.post("/api/contacts", (request, response) => {
+app.post("/api/persons", (request, response) => {
   if (!request.body) {
     return response.status(400).json({ errpr: "content is missing" });
   }
@@ -63,7 +63,7 @@ app.post("/api/contacts", (request, response) => {
   response.json(contact);
 });
 
-app.delete("/api/contacts/:id", (request, response) => {
+app.delete("/api/persons/:id", (request, response) => {
   let id = Number(request.params.id);
   contacts = contacts.filter((contact) => contact.id !== id);
   response.status(204).end();
