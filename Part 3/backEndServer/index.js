@@ -36,8 +36,12 @@ app.get("/api/persons", (request, response) => {
 });
 
 app.get("/info", (request, response) => {
-    response.send(`<h4>Phone book has info for ${contacts.length-1} people</h4> <p>${Date()}</p>`)
-})
+  response.send(
+    `<h4>Phone book has info for ${
+      contacts.length - 1
+    } people</h4> <p>${Date()}</p>`
+  );
+});
 
 app.get("/api/persons/:id", (request, response) => {
   let id = Number(request.params.id);
@@ -46,13 +50,21 @@ app.get("/api/persons/:id", (request, response) => {
     response.json(contact);
   } else {
     response.statusMessage = "Contact not found";
-    response.status(400).end();
+    response.status(400).json({error:"person not found"}).end();
   }
 });
 
 app.post("/api/persons", (request, response) => {
-  if (!request.body) {
-    return response.status(400).json({ errpr: "content is missing" });
+  if (!request.body.name || !request.body.number) {
+    return response
+      .status(400)
+      .json({ error: "Content is missing, please check again" });
+  }
+  const isFound = contacts.find(
+    (contact) => request.body.name === contact.name
+  );
+  if (isFound) {
+    return response.status(400).json({ error: "Must be uniqe name" });
   }
 
   const contact = {
