@@ -4,6 +4,6 @@ POST http://localhost:3001/api/persons
 content-type: application/json
 
 {
-    "name": "sample",
-    "time": "Wed, 21 Oct 2015 18:27:50 GMT"
+"name": "ascassjkrgihhascdiiuui",
+"number": "040-12356"
 }
