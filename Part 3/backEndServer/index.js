@@ -1,4 +1,5 @@
 const express = require("express");
+const morgan = require("morgan")
 const app = express();
 app.use(express.json());
 
@@ -30,6 +31,8 @@ const generateId = () => {
     contacts.length > 0 ? Math.max(...contacts.map((n) => n.id)) : 0;
   return maxId + 1;
 };
+
+app.use(morgan('tiny'))
 
 app.get("/api/persons", (request, response) => {
   response.json(contacts);
@@ -84,6 +87,11 @@ app.delete("/api/persons/:id", (request, response) => {
   contacts = contacts.filter((contact) => contact.id !== id);
   response.status(204).end();
 });
+
+app.use((req, res, next) => {
+  console.log('Time:', Date.now())
+  next()
+})
 
 app.listen(3001, () => {
   console.log("Running on port 3001");
