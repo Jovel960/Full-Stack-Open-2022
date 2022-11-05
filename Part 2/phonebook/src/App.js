@@ -16,7 +16,7 @@ const App = () => {
   useEffect(() => {
     //console.log("effect");
     backEndServices
-      .getAll("http://localhost:3001/persons")
+      .getAll("http://localhost:3001/api/persons")
       .then((contacts) => setContacts(contacts));
     // axios
     //   .get("http://localhost:3001/persons")
@@ -74,7 +74,7 @@ const App = () => {
     }
     if (!isFound && !isExists) {
       backEndServices
-        .addContact("http://localhost:3001/persons", newContact)
+        .addContact("http://localhost:3001/api/persons", newContact)
         .then((person) => {
           setContacts(contacts.concat(person));
           setSuccessMessage(`added ${newContact.name} to the phonebook`);
@@ -123,7 +123,7 @@ const App = () => {
     const newList = contacts.filter((contact) => contact.id !== id);
     if (window.confirm(`Do you really want to delete ${name} from the list?`)) {
       backEndServices
-        .deleteContact("http://localhost:3001/persons", id)
+        .deleteContact("http://localhost:3001/api/persons", id)
         .then((res) => setContacts(newList))
         .catch((err) => {
           setErrorMessage(
