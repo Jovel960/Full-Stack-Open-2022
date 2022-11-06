@@ -1,0 +1,39 @@
+{
+  "persons": [
+    {
+      "name": "Arto Hellas",
+      "number": "040-1234567",
+      "id": 1
+    },
+    {
+      "name": "Ada Lovelace",
+      "number": "40-66-464658",
+      "id": 2
+    },
+    {
+      "name": "Dan Abramov",
+      "number": "12-43-234345",
+      "id": 3
+    },
+    {
+      "name": "Mary Poppendieck",
+      "number": "39-23-6423122",
+      "id": 4
+    },
+    {
+      "name": "Buddy",
+      "number": "03-9875596",
+      "id": 5
+    },
+    {
+      "name": "Tony Soprano",
+      "number": "+854-88-63245",
+      "id": 6
+    },
+    {
+      "name": "O'malli",
+      "number": "033-444444",
+      "id": 7
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+h1 {
+    color:blue;
+    font-style: italic;
+}
+
+h2{
+    color:blue;
+    font-style:italic
+}
+
+.successMessage{
+    background-color: lightgray;
+    border-style: solid;
+    color:green;
+    font-size: 30px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+.errorMessage{
+    background-color: lightgray;
+    font-size: 30px;
+    font-family: italic;
+    color:red;
+    padding: 10px;
+    border-radius: 5px;
+    border-style: solid;
+    margin-bottom: 10px;
+}
+
+.h2CopyRight {
+    font-family: 'italic';
+    color: blue;
+}

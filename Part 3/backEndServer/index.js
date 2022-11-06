@@ -1,10 +1,12 @@
 const express = require("express");
 const morgan = require("morgan");
-const cors = require("cors")
+const cors = require("cors");
+const { request, response } = require("express");
 const app = express();
 app.use(express.json());
 app.use(morgan(":method :url :body"));
-app.use(cors())
+app.use(cors());
+app.use(express.static("build"));
 
 let contacts = [
   {
@@ -36,6 +38,10 @@ const generateId = () => {
 };
 
 app.use(morgan("tiny"));
+
+app.get("/", (request, response) => {
+  response.send("ok");
+});
 
 app.get("/api/persons", (request, response) => {
   response.json(contacts);
@@ -95,8 +101,8 @@ app.delete("/api/persons/:id", (request, response) => {
   response.status(204).end();
 });
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => {
-  console.log(`Running on port ${3001}`);
+  console.log(`Running on port ${PORT}`);
 });
