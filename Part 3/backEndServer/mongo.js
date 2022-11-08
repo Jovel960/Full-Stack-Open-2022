@@ -37,7 +37,6 @@ if (process.argv.length === 3) {
 } else {
   mongoose.connect(url).then((result) => {
     console.log("connected");
-
     const person = new Person({
       name: name,
       number: numberr,
