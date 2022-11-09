@@ -1,35 +1,15 @@
 const express = require("express");
 const morgan = require("morgan");
+const mongoose = require("mongoose");
 const cors = require("cors");
 const { request, response } = require("express");
 const app = express();
+require("dotenv").config();
+const Person = require("./mongoDB/personDB");
 app.use(express.json());
 app.use(morgan(":method :url :body"));
 app.use(cors());
 app.use(express.static("build"));
-
-let contacts = [
-  {
-    id: 1,
-    name: "Arto Hellas",
-    number: "040-123456",
-  },
-  {
-    id: 2,
-    name: "Ada Lovelace",
-    number: "39-44-5323523",
-  },
-  {
-    id: 3,
-    name: "Dan Abramov",
-    number: "12-43-234345",
-  },
-  {
-    id: 4,
-    name: "Mary Poppendieck",
-    number: "39-23-6423122",
-  },
-];
 
 const generateId = () => {
   const maxId =
@@ -44,7 +24,9 @@ app.get("/", (request, response) => {
 });
 
 app.get("/api/persons", (request, response) => {
-  response.json(contacts);
+  Person.find({}).then((res) => {
+    response.json(res);
+  });
 });
 
 app.get("/info", (request, response) => {
@@ -56,14 +38,13 @@ app.get("/info", (request, response) => {
 });
 
 app.get("/api/persons/:id", (request, response) => {
-  let id = Number(request.params.id);
-  const contact = contacts.find((contact) => contact.id === id);
-  if (contact) {
-    response.json(contact);
-  } else {
-    response.statusMessage = "Contact not found";
-    response.status(400).json({ error: "person not found" }).end();
-  }
+  //console.log("params", request.params)
+  Person.findById(request.params.id)
+    .then((res) => response.json(res))
+    .catch((err) => {
+      response.statusMessage = "Person not found";
+      response.status(404).json({ error: "person not found" }).end();
+    });
 });
 
 app.post("/api/persons", (request, response) => {
@@ -72,23 +53,19 @@ app.post("/api/persons", (request, response) => {
       .status(400)
       .json({ error: "Content is missing, please check again" });
   }
-  const isFound = contacts.find(
-    (contact) => request.body.name === contact.name
-  );
-  if (isFound) {
-    return response.status(400).json({ error: "Must be uniqe name" });
-  }
 
-  const contact = {
+  console.log("content", request.body.name, request.body.number);
+  const person = new Person({
     name: request.body.name,
     number: request.body.number,
-    id: generateId(),
-  };
+  });
 
-  //console.log(request.body);
-  //console.log(contact)
-  contacts = contacts.concat(contact);
-  response.json(contact);
+  person
+    .save()
+    .then((res) => {
+      response.json(res);
+    })
+    .catch((err) => console.log(err));
 });
 
 morgan.token("body", (req) => {
@@ -97,11 +74,19 @@ morgan.token("body", (req) => {
 
 app.delete("/api/persons/:id", (request, response) => {
   let id = Number(request.params.id);
-  contacts = contacts.filter((contact) => contact.id !== id);
-  response.status(204).end();
+  console.log(id);
+  Person.findOneAndDelete(id)
+    .then((res) => {
+      response.statusMessage = "Person deleted successfully !";
+      response.status(204).end();
+    })
+    .catch((err) => {
+      response.statusMessage = "Something went wrong";
+      response.status(400).end();
+    });
 });
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT;
 
 app.listen(PORT, () => {
   console.log(`Running on port ${PORT}`);
