@@ -6,10 +6,10 @@ const { request, response } = require("express");
 const app = express();
 require("dotenv").config();
 const Person = require("./mongoDB/personDB");
-app.use(express.json());
 app.use(morgan(":method :url :body"));
 app.use(cors());
 app.use(express.static("build"));
+app.use(express.json());
 
 const generateId = () => {
   const maxId =
@@ -40,10 +40,16 @@ app.get("/info", (request, response) => {
 app.get("/api/persons/:id", (request, response) => {
   //console.log("params", request.params)
   Person.findById(request.params.id)
-    .then((res) => response.json(res))
+    .then((res) => {
+      if (res) {
+        response.json(res);
+      } else {
+        response.status(404).end();
+      }
+    })
     .catch((err) => {
       response.statusMessage = "Person not found";
-      response.status(404).json({ error: "person not found" }).end();
+      response.status(400).json({ error: "malformatted information" }).end();
     });
 });
 
