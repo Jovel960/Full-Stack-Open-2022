@@ -22,7 +22,6 @@ app.get("/api/persons", (request, response, next) => {
   });
 });
 
-
 app.get("/info", (request, response) => {
   response.send(
     `<h4>Phone book has info for ${
@@ -30,6 +29,25 @@ app.get("/info", (request, response) => {
     } people</h4> <p>${Date()}</p>`
   );
 });
+
+app.put("/api/persons/:id", (request, response, next) => {
+  //console.log("in put route")
+  const person = {
+    name: request.body.name,
+    number: request.body.number,
+  };
+  Person.findByIdAndUpdate(request.params.id, person, { new: true })
+    .then((person) => {
+      response.json(person);
+    })
+    .catch((error) => next(error));
+});
+
+const putPersonHandle = (error, request, response) => {
+  return response.status(400).send({ error: "Update failed" });
+};
+
+app.use(putPersonHandle);
 
 app.get("/api/persons/:id", (request, response, next) => {
   //console.log("params", request.params)
@@ -109,6 +127,12 @@ const deleteErrorHandler = (request, response) => {
 };
 
 app.use(deleteErrorHandler);
+
+// const handleUpdatePerson = (error, request, response) => {
+//   return response.status(400).send({ error: "Update failed" });
+// };
+
+// app.use(handleUpdatePerson);
 
 const PORT = process.env.PORT;
 
