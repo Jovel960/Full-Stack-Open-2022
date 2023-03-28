@@ -32,4 +32,4 @@ app.use("/api/blogs", blogRouter);
 app.listen(config.PORT, () => {
   logger.info(`Server running on port ${config.PORT}`);
 });
-// app.use(middleware);
+app.use(middleware);
