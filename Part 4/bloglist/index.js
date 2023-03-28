@@ -1,49 +1,35 @@
-const http = require('http')
-const express = require('express')
-const app = express()
-const cors = require('cors')
-const mongoose = require('mongoose')
-const { response } = require('express')
+//const http = require('http')
+const express = require("express");
+const app = express();
+const cors = require("cors");
+const mongoose = require("mongoose");
+//const { response } = require('express')
+const logger = require("./utilits/logger");
+const config = require("./utilits/config");
+//const Blog = require('./model/bloglist');
+const blogRouter = require("./controllers/bloglistRouter");
+const middleware = require("./utilits/middleware");
 
-const blogSchema = new mongoose.Schema({
-  title: String,
-  author: String,
-  url: String,
-  likes: Number
-})
+const mongoUrl = config.MONGODB_URI;
+mongoose.set("strictQuery", false);
 
-const Blog = mongoose.model('bloglist', blogSchema)
+logger.info("connecting to", config.MONGODB_URI);
 
-const mongoUrl = 'mongodb+srv://fullstack:fullstack@cluster0.tmpnidm.mongodb.net/bloglist?retryWrites=true&w=majority'
-mongoose.set('strictQuery',false)
-mongoose.connect(mongoUrl)
+mongoose
+  .connect(config.MONGODB_URI)
+  .then(() => {
+    logger.info("connected to MongoDB");
+  })
+  .catch((error) => {
+    logger.error("error connecting to MongoDB:", error.message);
+  });
 
-app.use(cors())
-app.use(express.json())
 
-app.get("/", (req,res) => {
-  res.send('<h1>Bloglist</h1>')
-})
-app.get('/api/blogs', (request, response) => {
-  Blog
-    .find({})
-    .then(blogs => {
-      console.log(blogs)
-      response.json(blogs)
-    })
-})
+app.use(cors());
+app.use(express.json());
+app.use("/api/blogs", blogRouter);
 
-app.post('/api/blogs', (request, response) => {
-  const blog = new Blog(request.body)
-
-  blog
-    .save()
-    .then(result => {
-      response.status(201).json(result)
-    })
-})
-
-const PORT = 3003
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
-})
+app.listen(config.PORT, () => {
+  logger.info(`Server running on port ${config.PORT}`);
+});
+// app.use(middleware);
