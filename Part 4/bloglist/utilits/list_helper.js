@@ -1,18 +1,15 @@
-
+var _ = require('lodash');
 function dummy(blogs) {
   return 1;
 }
 
 function totalLikes(blogsArr) {
-  let sum = blogsArr.reduce((a, b) => a + b.likes, 0);
+  let sum = _.reduce(blogsArr, (a, b) => a + b.likes, 0);
   return sum;
 }
 
 function blogWithMaxLikes(blogsArr) {
-  let firstBlog = blogsArr[0];
-  for (blog of blogsArr) {
-    if (blog.likes > firstBlog.likes) firstBlog = blog;
-  }
+  let firstBlog = _.maxBy(blogsArr, (x) => x.likes)
   return firstBlog;
 }
 
