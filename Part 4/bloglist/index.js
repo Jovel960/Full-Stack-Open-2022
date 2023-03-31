@@ -23,12 +23,11 @@ mongoose
   .catch((error) => {
     logger.error("error connecting to MongoDB:", error.message);
   });
-app.get("/", (req, res) => {
-  res.send("p");
-});
+
+app.use(cors());
 app.use("/api/blogs", blogRouter);
 app.use(middleware.requestLogger);
-app.use(cors());
+
 app.use(express.json());
 
 app.listen(config.PORT, () => {
