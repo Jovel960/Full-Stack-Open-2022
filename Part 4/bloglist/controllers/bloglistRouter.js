@@ -2,9 +2,6 @@ const blogRouter = require('express').Router();
 const Blog = require('../model/bloglist');
 const config = require('../utilits/config')
 
-// blogRouter.get("/", (req,res) => {
-//   res.send('<h1>Bloglist</h1>')
-// })
 blogRouter.get('/', (request, response) => {
   Blog
     .find({})
