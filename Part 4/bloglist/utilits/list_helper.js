@@ -13,4 +13,15 @@ function blogWithMaxLikes(blogsArr) {
   return firstBlog;
 }
 
-module.exports = { dummy, totalLikes, blogWithMaxLikes };
+function mostBlogs(blogs) {
+  const grouped = _.groupBy(blogs, 'author');
+  const authorCounts = _.mapValues(grouped, group => group.length);
+  const maxAuthor = _.maxBy(_.keys(authorCounts), author => authorCounts[author]);
+
+  return {
+    author: maxAuthor,
+    blogs: authorCounts[maxAuthor],
+  };
+}
+
+module.exports = { dummy, totalLikes, blogWithMaxLikes, mostBlogs };
