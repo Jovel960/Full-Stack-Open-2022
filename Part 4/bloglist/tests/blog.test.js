@@ -1,4 +1,39 @@
-const { dummy, totalLikes } = require("../utilits/list_helper");
+const { dummy, totalLikes, blogWithMaxLikes } = require("../utilits/list_helper");
+
+  let max =  {
+      _id: "5a422aa71b54a676234d17f8",
+      title: "Oskar",
+      author: "Turs",
+      url: "",
+      likes: 10,
+      __v: 0,
+    }
+  const Blogs = [
+    {
+      _id: "5a422aa71b54a676234d17f8",
+      title: "Go To Statement Considered Harmful",
+      author: "Edsger W. Dijkstra",
+      url: "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
+      likes: 5,
+      __v: 15,
+    },
+    {
+      _id: "5a422aa71b54a676234d17f8",
+      title: "Oskar",
+      author: "Turs",
+      url: "",
+      likes: 10,
+      __v: 0,
+    },
+     {
+      _id: "5a422aa71b54a676234d17f8",
+      title: "Go ",
+      author: "Edsger",
+      url: "",
+      likes: 1,
+      __v: 0,
+    },
+  ];
 
 test("First test", () => {
   const blogs = [];
@@ -8,17 +43,11 @@ test("First test", () => {
 });
 
 describe("total likes test", () => {
-  const listWithOneBlog = [
-    {
-      _id: "5a422aa71b54a676234d17f8",
-      title: "Go To Statement Considered Harmful",
-      author: "Edsger W. Dijkstra",
-      url: "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
-      likes: 5,
-      __v: 0,
-    },
-  ];
   test("helper function test", () => {
-    expect(totalLikes(listWithOneBlog)).toBe(5);
+    expect(totalLikes(Blogs)).toBe(16);
   });
 });
+
+test("Return the blog with the max likes", () => {
+  expect(max).toEqual(blogWithMaxLikes(Blogs));
+})
