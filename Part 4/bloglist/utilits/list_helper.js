@@ -1,4 +1,4 @@
-var _ = require('lodash');
+var _ = require("lodash");
 function dummy(blogs) {
   return 1;
 }
@@ -9,14 +9,17 @@ function totalLikes(blogsArr) {
 }
 
 function blogWithMaxLikes(blogsArr) {
-  let firstBlog = _.maxBy(blogsArr, (x) => x.likes)
+  let firstBlog = _.maxBy(blogsArr, (x) => x.likes);
   return firstBlog;
 }
 
 function mostBlogs(blogs) {
-  const grouped = _.groupBy(blogs, 'author');
-  const authorCounts = _.mapValues(grouped, group => group.length);
-  const maxAuthor = _.maxBy(_.keys(authorCounts), author => authorCounts[author]);
+  const grouped = _.groupBy(blogs, "author");
+  const authorCounts = _.mapValues(grouped, (group) => group.length);
+  const maxAuthor = _.maxBy(
+    _.keys(authorCounts),
+    (author) => authorCounts[author]
+  );
 
   return {
     author: maxAuthor,
@@ -24,4 +27,27 @@ function mostBlogs(blogs) {
   };
 }
 
-module.exports = { dummy, totalLikes, blogWithMaxLikes, mostBlogs };
+function mostLikes(blogs) {
+  const groupedBlogs = _.groupBy(blogs, "author");
+
+  const authorLikes = _.mapValues(groupedBlogs, (blogs) => {
+    return _.sumBy(blogs, "likes");
+  });
+
+  const sortedAuthors = _.orderBy(
+    _.keys(authorLikes),
+    (author) => {
+      return authorLikes[author];
+    },
+    "desc"
+  );
+
+  const mostLikedAuthor = sortedAuthors[0];
+
+  return {
+    author: mostLikedAuthor,
+    likes: authorLikes[mostLikedAuthor],
+  };
+}
+
+module.exports = { dummy, totalLikes, blogWithMaxLikes, mostBlogs, mostLikes };

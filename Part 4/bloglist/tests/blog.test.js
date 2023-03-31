@@ -1,4 +1,4 @@
-const { dummy, totalLikes, blogWithMaxLikes, mostBlogs } = require("../utilits/list_helper");
+const { dummy, totalLikes, blogWithMaxLikes, mostBlogs, mostLikes } = require("../utilits/list_helper");
 
   let max =  {
       _id: "5a422aa71b54a676234d17f8",
@@ -53,4 +53,9 @@ test("Return the blog with the max likes", () => {
 })
 test("max author blogs", () => {
   expect({ author: 'Edsger W. Dijkstra', blogs: 1 }).toEqual(mostBlogs(Blogs))
+})
+
+
+test("max author likes", () => {
+  expect({ author: 'Turs', likes: 10 }).toEqual(mostLikes(Blogs))
 })
