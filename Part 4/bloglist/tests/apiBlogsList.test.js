@@ -67,6 +67,19 @@ test("post a blog without likes property", async () => {
   expect(blogsArr[blogsArr.length -1 ].likes).toBe(0);
 })
 
+test("Post a blog without url or title", async () => {
+   const newBlog = {
+    title: "N12",
+    author: "Dani Kushmaru",
+  }
+  await api.post("/api/blogs").send(newBlog).expect(400);
+    const newBlog2 = {
+    author: "Dani Kushmaru",
+    url: "mako.co.il",
+  }
+    await api.post("/api/blogs").send(newBlog2).expect(400);
+})
+
 afterAll(async () => {
   await mongoose.connection.close();
 });

@@ -8,6 +8,10 @@ blogRouter.get("/", async (request, response) => {
 });
 
 blogRouter.post("/", async (request, response, next) => {
+  if(!request.body.url || !request.body.title)
+  {
+    response.status(400).end();
+  }
   if (!request.body.likes) request.body.likes = 0;
   const blog = new Blog(request.body);
   try {
