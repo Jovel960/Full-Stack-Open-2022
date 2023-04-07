@@ -8,6 +8,7 @@ blogRouter.get("/", async (request, response) => {
 });
 
 blogRouter.post("/", async (request, response, next) => {
+  if (!request.body.likes) request.body.likes = 0;
   const blog = new Blog(request.body);
   try {
     let res = await blog.save();
@@ -28,16 +29,12 @@ blogRouter.get("/:id", async (req, res, next) => {
 });
 
 blogRouter.delete("/:id", async (req, res, next) => {
-  try{
-      result = await Blog.findByIdAndDelete(req.params.id);
-      res.status(204).json(result);
-  }
-  catch(err) {
+  try {
+    result = await Blog.findByIdAndDelete(req.params.id);
+    res.status(204).json(result);
+  } catch (err) {
     next(err);
   }
-
-
-
-})
+});
 
 module.exports = blogRouter;

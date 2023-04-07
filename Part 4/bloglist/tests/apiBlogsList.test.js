@@ -55,6 +55,18 @@ test("post new blog", async () => {
   expect(response.body[response.body.length -1].title).toBe('N12')
 })
 
+test("post a blog without likes property", async () => {
+  const newBlog = {
+    title: "N12",
+    author: "Dani Kushmaru",
+    url: "mako.co.il",
+  }
+  await api.post("/api/blogs").send(newBlog).expect(201);
+  const res = await api.get("/api/blogs");
+  let blogsArr = res.body.map(blog => blog);
+  expect(blogsArr[blogsArr.length -1 ].likes).toBe(0);
+})
+
 afterAll(async () => {
   await mongoose.connection.close();
 });
