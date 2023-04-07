@@ -6,10 +6,10 @@ const app = require("../app");
 const api = supertest(app);
 
 test('blogs are returned as json', async () => {
-  await api
-    .get('/api/blogs')
-    .expect(200)
-    .expect('Content-Type', /application\/json/)
+ const response = await api.get('/api/blogs')
+    console.log(response)
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveLength(1);
 }, 10000)
 
 afterAll(async () => {
