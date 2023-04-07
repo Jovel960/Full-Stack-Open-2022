@@ -80,6 +80,14 @@ test("Post a blog without url or title", async () => {
     await api.post("/api/blogs").send(newBlog2).expect(400);
 })
 
+test("delete exist blog", async () => {
+  const res = await api.get("/api/blogs");
+  let blogsArr = res.body.map(element => element);
+  await api.delete(`/api/blogs/${blogsArr[0].id}`).expect(204);
+  const res2 = await api.get("/api/blogs");
+  expect(res2.body).toHaveLength(initialBlogs.length -1 )
+})
+
 afterAll(async () => {
   await mongoose.connection.close();
 });
