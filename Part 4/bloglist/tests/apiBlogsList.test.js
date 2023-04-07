@@ -1,42 +1,47 @@
 const supertest = require("supertest");
 const Blog = require("../model/bloglist");
-const mongoose = require('mongoose') 
+const mongoose = require("mongoose");
 const app = require("../app");
 
 const api = supertest(app);
 
 const initialBlogs = [
   {
-    title:"Biggest rappers in the world",
-    author:"Biggie",
-    url:"",
-    likes:15
+    title: "Biggest rappers in the world",
+    author: "Biggie",
+    url: "",
+    likes: 15,
   },
   {
-    title:"The next israeli war",
-    author:"Amit Atzmon",
-    url:"",
-    likes:30
-  }
-]
+    title: "The next israeli war",
+    author: "Amit Atzmon",
+    url: "",
+    likes: 30,
+  },
+];
 
 beforeEach(async () => {
   await Blog.deleteMany({});
+  console.log("Deleted all")
 
-  let firstBlog = new Blog(initialBlogs[0]);
-  await firstBlog.save();
+  initialBlogs.forEach(async (element, i) => {
+    let savedBlog = new Blog(element);
+    await savedBlog.save();
+  });
+  console.log("saved dummy data")
+});
 
-  let secondBlog = new Blog(initialBlogs[1]);
-  await secondBlog.save();
+test("blogs are returned as json", async () => {
+  const response = await api.get("/api/blogs");
+  expect(response.status).toBe(200);
+  expect(response.body).toHaveLength(2);
+}, 10000);
+
+test("verify te id property", async () => {
+  const response = await api.get("/api/blogs");
+  response.body.map(blog => expect(blog.id).toBeDefined());
 })
 
-test('blogs are returned as json', async () => {
- const response = await api.get('/api/blogs')
-    console.log(response)
-    expect(response.status).toBe(200);
-    expect(response.body).toHaveLength(2);
-}, 10000)
-
 afterAll(async () => {
-  await mongoose.connection.close()
-},)
+  await mongoose.connection.close();
+});
