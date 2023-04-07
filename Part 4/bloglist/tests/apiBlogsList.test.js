@@ -1,0 +1,17 @@
+const supertest = require("supertest");
+const Blog = require("../model/bloglist");
+const mongoose = require('mongoose') 
+const app = require("../app");
+
+const api = supertest(app);
+
+test('blogs are returned as json', async () => {
+  await api
+    .get('/api/blogs')
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+}, 10000)
+
+afterAll(async () => {
+  await mongoose.connection.close()
+},)

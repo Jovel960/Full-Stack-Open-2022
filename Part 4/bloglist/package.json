@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
+    "start": "cross-env NODE_ENV=production node index.js",
+    "dev": "cross-env NODE_ENV=development nodemon index.js",
     "logs:prod": "heroku logs --tail",
-    "test": "jest --verbose"
+    "test": "cross-env NODE_ENV=testing jest --verbose --runInBand"
   },
   "author": "",
   "license": "ISC",
@@ -23,6 +23,7 @@
     "nodemon": "^2.0.22"
   },
   "jest": {
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "globalTeardown": "./teardown.js"
   }
 }
