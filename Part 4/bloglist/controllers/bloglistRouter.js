@@ -9,10 +9,9 @@ blogRouter.get("/", async (request, response) => {
 
 blogRouter.post("/", async (request, response, next) => {
   const blog = new Blog(request.body);
-
   try {
-    await blog.save();
-    response.status(201).json(result);
+    let res = await blog.save();
+    response.status(201).json(res);
   } catch (err) {
     next(err);
   }

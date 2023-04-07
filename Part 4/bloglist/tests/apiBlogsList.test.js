@@ -42,6 +42,19 @@ test("verify te id property", async () => {
   response.body.map(blog => expect(blog.id).toBeDefined());
 })
 
+test("post new blog", async () => {
+  const newBlog = {
+    title: "N12",
+    author: "Dani Kushmaru",
+    url: "mako.co.il",
+    likes: 15,
+  }
+  await api.post("/api/blogs").send(newBlog).expect(201);
+  const response = await api.get("/api/blogs");
+  expect(response.body).toHaveLength(initialBlogs.length + 1);
+  expect(response.body[response.body.length -1].title).toBe('N12')
+})
+
 afterAll(async () => {
   await mongoose.connection.close();
 });
