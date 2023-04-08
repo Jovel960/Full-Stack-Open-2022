@@ -1,3 +1,4 @@
+const User = require("../model/user");
 var _ = require("lodash");
 function dummy(blogs) {
   return 1;
@@ -44,10 +45,17 @@ function mostLikes(blogs) {
 
   const mostLikedAuthor = sortedAuthors[0];
 
+ 
   return {
     author: mostLikedAuthor,
     likes: authorLikes[mostLikedAuthor],
   };
 }
 
-module.exports = { dummy, totalLikes, blogWithMaxLikes, mostBlogs, mostLikes };
+ const getUsersDb = async () => {
+    const users = await User.find({});
+    return users.map(user => user);
+  }
+
+
+module.exports = { dummy, totalLikes, blogWithMaxLikes, mostBlogs, mostLikes, getUsersDb };
