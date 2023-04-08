@@ -8,8 +8,7 @@ blogRouter.get("/", async (request, response) => {
 });
 
 blogRouter.post("/", async (request, response, next) => {
-  if(!request.body.url || !request.body.title)
-  {
+  if (!request.body.url || !request.body.title) {
     response.status(400).end();
   }
   if (!request.body.likes) request.body.likes = 0;
@@ -41,29 +40,25 @@ blogRouter.delete("/:id", async (req, res, next) => {
   }
 });
 
-blogRouter.put("/:id", async (req,res,next) => {
-   if(!request.body.url || !request.body.title)
-  {
-    response.status(400).end();
-  }
-  else{
+blogRouter.put("/:id", async (req, res, next) => {
+  console.log(req.body);
+  if (!req.body.url || !req.body.title) {
+    res.status(400).end();
+  } else {
     const body = req.body;
-      const blog = {
-        author: body.author,
-        title:body.title,
-        url:body.url,
-        likes:body.likes
-      }
-      try{
-        let result =  await Blog.findByIdAndUpdate(req.body.params, blog, {new:true});
-        res.status(204).end();
-      }
-      catch(err){
-        next(err);
-      }
-     
+    const blog = {
+      author: body.author,
+      title: body.title,
+      url: body.url,
+      likes: body.likes,
+    };
+    try {
+      let result = await Blog.findByIdAndUpdate(req.params.id, blog, {new: true});
+      res.status(204).end();
+    } catch (err) {
+      next(err);
+    }
   }
-
-})
+});
 
 module.exports = blogRouter;

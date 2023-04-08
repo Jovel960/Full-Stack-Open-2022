@@ -27,8 +27,6 @@ app.use(cors());
 app.use(express.json());
 app.use("/api/blogs", blogRouter);
 app.use(middleware.requestLogger);
-
-
 app.use(middleware.unKnownEndPoint);
 
 module.exports = app;

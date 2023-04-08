@@ -9,7 +9,7 @@ const initialBlogs = [
   {
     title: "Biggest rappers in the world",
     author: "Biggie",
-    url: "",
+    url: "karma.com",
     likes: 15,
   },
   {
@@ -86,6 +86,14 @@ test("delete exist blog", async () => {
   await api.delete(`/api/blogs/${blogsArr[0].id}`).expect(204);
   const res2 = await api.get("/api/blogs");
   expect(res2.body).toHaveLength(initialBlogs.length -1 )
+})
+
+test("update an exist blog", async () => {
+  const res = await api.get("/api/blogs");
+  let blogsArr = res.body.map(blog => blog);
+  let blog = blogsArr[0];
+  blog = {...blog, title:"karma"};
+  await api.put(`/api/blogs/${blogsArr[0].id}`).send(blog).expect(204);
 })
 
 afterAll(async () => {
