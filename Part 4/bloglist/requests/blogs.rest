@@ -1,0 +1,24 @@
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+"username":"jovel",
+"name":"yovel",
+"password":"1243"
+}
+###
+
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+    "title": "N12",
+    "author": "Dani Kushmaru",
+    "url": "mako.co.il",
+   "likes": "15",
+   "userId":"643321356b1520aa61e61d3d"
+}
+###
+GET http://localhost:3003/api/users
+###
+GET http://localhost:3003/api/blogs

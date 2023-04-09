@@ -4,7 +4,19 @@ const config = require("../utilits/config");
 const { getUsersDb } = require("../utilits/list_helper");
 const bcrypt = require("bcrypt");
 
+userRouter.get("/", async (req,res,next) => {
+    try{
+        let users = await User.find({}).populate('blogs',{ title: 1, author: 1, url:1,likes:1 });
+        res.status(200).json(users);
+    }
+    catch(err){
+        next(err)
+    }
+    
+})
+
 userRouter.post("/", async (req, res, next) => {
+    console.log(req.body)
   const { username, name, password } = req.body;
   if (password.length < 3 || username.length < 3 || !username || !password) {
     res.status(400).json({
