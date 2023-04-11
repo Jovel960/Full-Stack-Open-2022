@@ -3,25 +3,26 @@ const Blog = require("../model/bloglist");
 const config = require("../utilits/config");
 const User = require("../model/user");
 const jwt = require("jsonwebtoken");
+const middleware = require("../utilits/middleware")
 
 blogRouter.get("/", async (request, response) => {
   const blogs = await Blog.find({}).populate("user", { name: 1, id: 1 });
   response.json(blogs);
 });
 
-blogRouter.post("/", async (request, response, next) => {
+blogRouter.post("/",middleware.userExtractor, async (request, response, next) => {
   if (!request.body.url || !request.body.title) {
     response.status(400).end();
   }
-  const decodedToken = jwt.verify(request.token, process.env.SEKRET);
-  if (!decodedToken) {
-    return response.status(401).json({ error: "invalid token" });
-  }
+  // const decodedToken = jwt.verify(request.token, process.env.SEKRET);
+  // if (!decodedToken) {
+  //   return response.status(401).json({ error: "invalid token" });
+  // }
   if (!request.body.likes) request.body.likes = 0;
   let body = request.body;
-
+  console.log(req.user);
   try {
-    let user = await User.findById(decodedToken.id);
+    let user = await User.findById(req.user.id);
 
     const blog = new Blog({
       title: body.title,
@@ -50,7 +51,7 @@ blogRouter.get("/:id", async (req, res, next) => {
   }
 });
 
-blogRouter.delete("/:id", async (req, res, next) => {
+blogRouter.delete("/:id",middleware.userExtractor, async (req, res, next) => {
   if (!req.token) {
     return res.status(401).json({ error: "Not authorized" });
   }
@@ -70,7 +71,7 @@ blogRouter.delete("/:id", async (req, res, next) => {
   }
 });
 
-blogRouter.put("/:id", async (req, res, next) => {
+blogRouter.put("/:id",middleware.userExtractor, async (req, res, next) => {
   if (!req.body) {
     return res.status(401).json({ error: "Not authorized" });
   } else if (!req.body.url || !req.body.title) {
