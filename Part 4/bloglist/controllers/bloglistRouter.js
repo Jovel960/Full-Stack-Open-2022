@@ -51,7 +51,18 @@ blogRouter.get("/:id", async (req, res, next) => {
 });
 
 blogRouter.delete("/:id", async (req, res, next) => {
+  if (!req.token) {
+    return res.status(401).json({ error: "Not authorized" });
+  }
   try {
+    let token = await jwt.verify(req.token, process.env.SEKRET);
+    let findUser = await User.findById(token.id);
+    let findBlog = await Blog.findById(req.params.id);
+    if (findUser._id.toString() !== findBlog.user._id.toString()) {
+      return res
+        .status(401)
+        .json({ error: "user dont have premission to delete the blog" });
+    }
     result = await Blog.findByIdAndDelete(req.params.id);
     res.status(204).json(result);
   } catch (err) {
@@ -60,22 +71,29 @@ blogRouter.delete("/:id", async (req, res, next) => {
 });
 
 blogRouter.put("/:id", async (req, res, next) => {
-  console.log(req.body);
-  if (!req.body.url || !req.body.title) {
-    res.status(400).end();
+  if (!req.body) {
+    return res.status(401).json({ error: "Not authorized" });
+  } else if (!req.body.url || !req.body.title) {
+    return res.status(400).end();
   } else {
-    const body = req.body;
-    const blog = {
-      author: body.author,
-      title: body.title,
-      url: body.url,
-      likes: body.likes,
-    };
     try {
+      let findBlog = await Blog.findById(req.params.id);
+      let userToken = await jwt.verify(req.token, process.env.SEKRET);
+      let findUser = await User.findById(userToken.id);
+      if (findUser._id.toString() !== findBlog.user._id.toString()) {
+        return res.status(401).json({ error: "Not authorized" });
+      }
+      const body = req.body;
+      const blog = {
+        author: body.author,
+        title: body.title,
+        url: body.url,
+        likes: body.likes,
+      };
       let result = await Blog.findByIdAndUpdate(req.params.id, blog, {
         new: true,
       });
-      res.status(204).end();
+      res.status(204).json(result);
     } catch (err) {
       next(err);
     }
