@@ -10,6 +10,7 @@ const config = require("./utilits/config");
 const blogRouter = require("./controllers/bloglistRouter");
 const middleware = require("./utilits/middleware");
 const userRouter = require("./controllers/usersRouter");
+const loginRouter =require("./controllers/loginRouter");
 
 const mongoUrl = config.MONGODB_URI;
 mongoose.set("strictQuery", false);
@@ -29,6 +30,7 @@ app.use(express.json());
 
 app.use("/api/blogs", blogRouter);
 app.use("/api/users", userRouter);
+app.use("/api/login", loginRouter);
 app.use(middleware.requestLogger);
 app.use(middleware.errorHandler)
 app.use(middleware.unKnownEndPoint);

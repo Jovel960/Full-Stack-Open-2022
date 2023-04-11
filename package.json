@@ -2,5 +2,8 @@
   "devDependencies": {
     "cross-env": "^7.0.3",
     "supertest": "^6.3.3"
+  },
+  "dependencies": {
+    "jsonwebtoken": "^9.0.0"
   }
 }
