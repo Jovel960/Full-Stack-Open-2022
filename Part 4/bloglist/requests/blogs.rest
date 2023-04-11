@@ -10,13 +10,13 @@ Content-Type: application/json
 
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvdmVsIiwiaWQiOiI2NDMzMjEzNTZiMTUyMGFhNjFlNjFkM2QiLCJpYXQiOjE2ODEyMDkzOTl9.relL-OnSJihew41Cg1OYXX7Bmm7Mqbj2yaVqvi5I3Vs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvdmVsIiwiaWQiOiI2NDMzMjEzNTZiMTUyMGFhNjFlNjFkM2QiLCJpYXQiOjE2ODEyMTM0MDZ9.-pIvZx8USLj_8F634wtngX7f_4u0AsKrm5wZPQ1Vtsc
 
 {
-    "title": "N12",
-    "author": "Dani Kushmaru",
-    "url": "mako.co.il",
-   "likes": "15",
+    "title": "NASA",
+    "author": "Yovel hadad",
+    "url": "NASA.IL",
+   "likes": "155"
 }
 ###
 GET http://localhost:3003/api/users

@@ -1,5 +1,16 @@
 const logger = require('./logger');
 
+const getTokenFromReq = function (request, response, next) {
+  const auth = request.get("authorization");
+  if (auth && auth.startsWith("Bearer ")) {
+    request.token = auth.replace("Bearer ", ""); // Store token in request object
+    next(); // Call next middleware or route handler
+  } else {
+    request.token = null; // Store null in request object
+    next(); // Call next middleware or route handler
+  }
+};
+
 const unKnownEndPoint = (request, response) => {
     response.status(404).send({error:"unknown endpoint"});
 }
@@ -40,4 +51,4 @@ const errorHandler = (error, request, response, next) => {
 }
 
 
-module.exports = {unKnownEndPoint, requestLogger, errorHandler};
+module.exports = {unKnownEndPoint, requestLogger, errorHandler, getTokenFromReq};
