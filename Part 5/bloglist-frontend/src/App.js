@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Blog from "./components/Blog";
+import { CreateNewBlog } from "./components/CreateNewBlog";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 
@@ -38,7 +39,7 @@ const App = () => {
   const loginForm = () => {
     return (
       <form
-        style={{ display: "flex", flexDirection: "column", marginLeft: "10px" }}
+        style={{ display: "flex", flexDirection: "column"}}
         onSubmit={handleLogin}
       >
         <label
@@ -85,7 +86,7 @@ const App = () => {
   if (!user) {
     return (
       <div
-        style={{ fontFamily: "sans-serif", fontSize: "1.5rem", color: "green" }}
+        style={{ fontFamily: "sans-serif", fontSize: "1.5rem", color: "green", marginLeft:"10px" }}
       >
         <h2>Login</h2>
         {loginForm()}
@@ -128,7 +129,9 @@ const App = () => {
         </button>
       </div>
 
-      {user && blogs.map((blog) => <Blog key={blog.id} blog={blog} />)}
+      <CreateNewBlog />
+
+      {blogs.map((blog) => <Blog key={blog.id} blog={blog} />)}
     </div>
   );
 };

@@ -12,5 +12,13 @@ const getAll = () => {
     return request.then((response) => response.data);
 };
 
+const createBlog = async (newBlog) => {
+   const config = {
+    headers: { Authorization: token },
+  }
+  let data = await axios.post(baseUrl, newBlog, config)
+  return data;
+}
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default { getAll, setToken };
