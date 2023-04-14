@@ -13,11 +13,21 @@ const App = () => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
   }, []);
 
+  useEffect(() => {
+    const user = JSON.parse(window.localStorage.getItem("userData"));
+    if (user) {
+      blogService.setToken(user.token);
+      setUser(user);
+    }
+  }, []);
+
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
       let user = await loginService({ username, password });
       setUser(user.data);
+      blogService.setToken(user.data.token);
+      window.localStorage.setItem("userData", JSON.stringify(user.data));
     } catch (err) {
       console.log(err);
     }
@@ -26,10 +36,14 @@ const App = () => {
   const loginForm = () => {
     return (
       <form
-        style={{ display: "flex", flexDirection: "column" }}
+        style={{ display: "flex", flexDirection: "column", marginLeft: "10px" }}
         onSubmit={handleLogin}
       >
-        <label placeholder="username" form="username">
+        <label
+          style={{ margin: "10px" }}
+          placeholder="username"
+          form="username"
+        >
           <input
             type="text"
             id="username"
@@ -38,7 +52,11 @@ const App = () => {
             onChange={({ target }) => setUserName(target.value)}
           />
         </label>
-        <label placeholder="password" form="password">
+        <label
+          style={{ margin: "10px" }}
+          placeholder="password"
+          form="password"
+        >
           <input
             type="password"
             id="password"
@@ -48,7 +66,13 @@ const App = () => {
           />
         </label>
         <input
-          style={{ maxWidth: "max-content" }}
+          style={{
+            maxWidth: "max-content",
+            margin: "10px",
+            borderRadius: "25px",
+            color: "blue",
+            backgroundColor: "aliceblue",
+          }}
           type="submit"
           value="Login"
         />
@@ -57,19 +81,42 @@ const App = () => {
   };
 
   return (
-    <div>
+    <div style={{ fontFamily: "sans-serif" }}>
       <header>
         <h2
           style={{
-            fontFamily: "sans-serif",
+            marginLeft: "10px",
             fontSize: "1 rem",
             color: "green",
+            textTransform: "capitalize",
+            cursor: "default",
           }}
         >
-          blogs
+          blogs list app
         </h2>
       </header>
-      {user === null ? loginForm() : <span>{`${user.name} is logged in`}</span>}
+      {user === null ? (
+        loginForm()
+      ) : (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            maxWidth: "max-content",
+            marginBottom: "10px",
+          }}
+        >
+          <span>{`${user.name} is logged in`}</span>
+          <button
+            onClick={() => {
+              window.localStorage.clear();
+              setUser(null);
+            }}
+          >
+            Log out
+          </button>
+        </div>
+      )}
       {user && blogs.map((blog) => <Blog key={blog.id} blog={blog} />)}
     </div>
   );
