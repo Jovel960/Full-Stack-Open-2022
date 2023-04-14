@@ -44,7 +44,7 @@ const App = () => {
     <div>
       <h2>blogs</h2>
       {user === null ? loginForm() : <span>{`${user.name} is logged in`}</span> }
-      {blogs.map(blog =>
+      {user && blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
     </div>
