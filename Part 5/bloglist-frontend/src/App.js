@@ -28,6 +28,8 @@ const App = () => {
       setUser(user.data);
       blogService.setToken(user.data.token);
       window.localStorage.setItem("userData", JSON.stringify(user.data));
+      setUserName("");
+      setPassword("");
     } catch (err) {
       console.log(err);
     }
@@ -80,13 +82,24 @@ const App = () => {
     );
   };
 
+  if (!user) {
+    return (
+      <div
+        style={{ fontFamily: "sans-serif", fontSize: "1.5rem", color: "green" }}
+      >
+        <h2>Login</h2>
+        {loginForm()}
+      </div>
+    );
+  }
+
   return (
     <div style={{ fontFamily: "sans-serif" }}>
       <header>
         <h2
           style={{
             marginLeft: "10px",
-            fontSize: "1 rem",
+            fontSize: "1.5rem",
             color: "green",
             textTransform: "capitalize",
             cursor: "default",
@@ -95,28 +108,26 @@ const App = () => {
           blogs list app
         </h2>
       </header>
-      {user === null ? (
-        loginForm()
-      ) : (
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            maxWidth: "max-content",
-            marginBottom: "10px",
+
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          maxWidth: "max-content",
+          marginBottom: "10px",
+        }}
+      >
+        <span>{`${user.name} is logged in`}</span>
+        <button
+          onClick={() => {
+            window.localStorage.clear();
+            setUser(null);
           }}
         >
-          <span>{`${user.name} is logged in`}</span>
-          <button
-            onClick={() => {
-              window.localStorage.clear();
-              setUser(null);
-            }}
-          >
-            Log out
-          </button>
-        </div>
-      )}
+          Log out
+        </button>
+      </div>
+
       {user && blogs.map((blog) => <Blog key={blog.id} blog={blog} />)}
     </div>
   );
