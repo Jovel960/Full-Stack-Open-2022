@@ -25,13 +25,18 @@ const App = () => {
 
   if (!user) {
     return (
-     <LoginForm user={user} setUser={setUser} setType={setType} setMessage={setMessage} /> 
+      <LoginForm
+        user={user}
+        setUser={setUser}
+        setType={setType}
+        setMessage={setMessage}
+      />
     );
   }
 
   return (
     <div style={{ fontFamily: "sans-serif" }}>
-      <header style={{textAlign:"center"}}>
+      <header style={{ textAlign: "center" }}>
         <h2
           style={{
             marginLeft: "10px",
@@ -65,7 +70,7 @@ const App = () => {
       </div>
 
       <CreateNewBlog
-      setType={setType}
+        setType={setType}
         setMessage={setMessage}
         setBlogs={setBlogs}
         blogs={blogs}
