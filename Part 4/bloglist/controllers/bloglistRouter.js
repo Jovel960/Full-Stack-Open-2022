@@ -20,9 +20,8 @@ blogRouter.post("/",middleware.userExtractor, async (request, response, next) =>
   // }
   if (!request.body.likes) request.body.likes = 0;
   let body = request.body;
-  console.log(req.user);
   try {
-    let user = await User.findById(req.user.id);
+    let user = await User.findById(request.user.id);
 
     const blog = new Blog({
       title: body.title,
