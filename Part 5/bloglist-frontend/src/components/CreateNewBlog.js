@@ -1,7 +1,7 @@
 import blogsService from "../services/blogs";
 import { useState } from "react";
 
-export const CreateNewBlog = ({ setMessage, setBlogs, blogs }) => {
+export const CreateNewBlog = ({ setMessage, setBlogs, blogs, setType }) => {
   const [title, setTitle] = useState("");
   const [url, setUrl] = useState("");
   const [author, setAuthor] = useState("");
@@ -9,20 +9,25 @@ export const CreateNewBlog = ({ setMessage, setBlogs, blogs }) => {
   const createNewBlog = async (e) => {
     e.preventDefault();
     if (title === "" || url === "") {
+        setType(false)
       setMessage("Must include url and title");
       setTimeout(() => setMessage(""), 5000);
     } else {
       try {
         let res = await blogsService.createBlog({ url, author, title });
         setBlogs(blogs.concat(res.data));
+        setTitle("");
+        setAuthor("");
+        setUrl("");
+        setType(true);
+        setMessage("Blog added !")
+        setTimeout(() => setMessage(""), 5000);
       } catch (err) {
+        setType(false)
         setMessage(err);
         setTimeout(() => setMessage(""), 5000);
       }
     }
-    setTitle("");
-    setAuthor("");
-    setUrl("");
   };
 
   return (

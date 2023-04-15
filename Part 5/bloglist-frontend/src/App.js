@@ -2,14 +2,14 @@ import { useState, useEffect } from "react";
 import Blog from "./components/Blog";
 import { CreateNewBlog } from "./components/CreateNewBlog";
 import blogService from "./services/blogs";
-import loginService from "./services/login";
+import { Message } from "./components/Message";
+import { LoginForm } from "./components/LoginForm";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
-  const [username, setUserName] = useState("");
-  const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [type, setType] = useState();
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -23,87 +23,15 @@ const App = () => {
     }
   }, []);
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      let user = await loginService({ username, password });
-      setUser(user.data);
-      blogService.setToken(user.data.token);
-      window.localStorage.setItem("userData", JSON.stringify(user.data));
-      setUserName("");
-      setPassword("");
-    } catch (err) {
-      setMessage(err);
-      setTimeout(() => setMessage(""), 5000)
-        }
-  };
-
-  const loginForm = () => {
-    return (
-      <form
-        style={{ display: "flex", flexDirection: "column" }}
-        onSubmit={handleLogin}
-      >
-        <label
-          style={{ margin: "10px" }}
-          placeholder="username"
-          form="username"
-        >
-          <input
-            type="text"
-            id="username"
-            value={username}
-            placeholder="User name"
-            onChange={({ target }) => setUserName(target.value)}
-          />
-        </label>
-        <label
-          style={{ margin: "10px" }}
-          placeholder="password"
-          form="password"
-        >
-          <input
-            type="password"
-            id="password"
-            value={password}
-            placeholder="Password"
-            onChange={({ target }) => setPassword(target.value)}
-          />
-        </label>
-        <input
-          style={{
-            maxWidth: "max-content",
-            margin: "10px",
-            borderRadius: "25px",
-            color: "blue",
-            backgroundColor: "aliceblue",
-          }}
-          type="submit"
-          value="Login"
-        />
-      </form>
-    );
-  };
-
   if (!user) {
     return (
-      <div
-        style={{
-          fontFamily: "sans-serif",
-          fontSize: "1.5rem",
-          color: "green",
-          marginLeft: "10px",
-        }}
-      >
-        <h2>Login</h2>
-        {loginForm()}
-      </div>
+     <LoginForm user={user} setUser={setUser} setType={setType} setMessage={setMessage} /> 
     );
   }
 
   return (
     <div style={{ fontFamily: "sans-serif" }}>
-      <header>
+      <header style={{textAlign:"center"}}>
         <h2
           style={{
             marginLeft: "10px",
@@ -116,7 +44,7 @@ const App = () => {
           blogs list app
         </h2>
       </header>
-      {message && <p>{message}</p>}
+      {message && <Message message={message} type={type} />}
       <div
         style={{
           display: "flex",
@@ -136,7 +64,12 @@ const App = () => {
         </button>
       </div>
 
-      <CreateNewBlog  setMessage={setMessage} setBlogs={setBlogs} blogs={blogs}/>
+      <CreateNewBlog
+      setType={setType}
+        setMessage={setMessage}
+        setBlogs={setBlogs}
+        blogs={blogs}
+      />
 
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
