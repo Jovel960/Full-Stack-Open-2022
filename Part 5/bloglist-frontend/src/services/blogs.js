@@ -3,8 +3,8 @@ const baseUrl = "/api/blogs";
 
 let token = null;
 
-const setToken = (token) => {
-  token = `Bearer ${token}`;
+const setToken = (UserToken) => {
+  token = `Bearer ${UserToken}`;
 };
 
 const getAll = () => {
@@ -16,9 +16,10 @@ const createBlog = async (newBlog) => {
    const config = {
     headers: { Authorization: token },
   }
+  console.log(config)
   let data = await axios.post(baseUrl, newBlog, config)
   return data;
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export
-export default { getAll, setToken };
+export default { getAll, setToken, createBlog };

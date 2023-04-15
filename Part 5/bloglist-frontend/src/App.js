@@ -9,6 +9,7 @@ const App = () => {
   const [user, setUser] = useState(null);
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -32,14 +33,15 @@ const App = () => {
       setUserName("");
       setPassword("");
     } catch (err) {
-      console.log(err);
-    }
+      setMessage(err);
+      setTimeout(() => setMessage(""), 5000)
+        }
   };
 
   const loginForm = () => {
     return (
       <form
-        style={{ display: "flex", flexDirection: "column"}}
+        style={{ display: "flex", flexDirection: "column" }}
         onSubmit={handleLogin}
       >
         <label
@@ -86,7 +88,12 @@ const App = () => {
   if (!user) {
     return (
       <div
-        style={{ fontFamily: "sans-serif", fontSize: "1.5rem", color: "green", marginLeft:"10px" }}
+        style={{
+          fontFamily: "sans-serif",
+          fontSize: "1.5rem",
+          color: "green",
+          marginLeft: "10px",
+        }}
       >
         <h2>Login</h2>
         {loginForm()}
@@ -109,7 +116,7 @@ const App = () => {
           blogs list app
         </h2>
       </header>
-
+      {message && <p>{message}</p>}
       <div
         style={{
           display: "flex",
@@ -129,9 +136,11 @@ const App = () => {
         </button>
       </div>
 
-      <CreateNewBlog />
+      <CreateNewBlog  setMessage={setMessage} setBlogs={setBlogs} blogs={blogs}/>
 
-      {blogs.map((blog) => <Blog key={blog.id} blog={blog} />)}
+      {blogs.map((blog) => (
+        <Blog key={blog.id} blog={blog} />
+      ))}
     </div>
   );
 };
