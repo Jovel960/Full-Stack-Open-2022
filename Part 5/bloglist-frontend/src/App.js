@@ -80,7 +80,9 @@ const App = () => {
         />
       </Togglable>
       {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} />
+        <div key={blog.id} style={{ flexDirection: "row" , border:"1px solid black", padding:"5px", marginTop:"3px"}}>
+            <Blog  blog={blog} />
+        </div>
       ))}
     </div>
   );

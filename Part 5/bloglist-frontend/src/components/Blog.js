@@ -1,7 +1,17 @@
-const Blog = ({blog}) => (
-  <div>
-    {blog.title} {blog.author}
-  </div>  
-)
+import Togglable from "./Togglable";
 
-export default Blog
+const Blog = ({ blog }) => {
+  console.log(blog);
+  return (
+    <div style={{ flexDirection: "column" }}>
+      {blog.title}
+      <Togglable buttonLabel="View">
+        <p>{blog.url}</p>
+        <p>{blog.likes}</p>
+        <p>{blog.author}</p>
+      </Togglable>
+    </div>
+  );
+};
+
+export default Blog;
