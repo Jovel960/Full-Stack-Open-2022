@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Blog from "./components/Blog";
 import { CreateNewBlog } from "./components/CreateNewBlog";
 import blogService from "./services/blogs";
@@ -11,6 +11,7 @@ const App = () => {
   const [user, setUser] = useState(null);
   const [message, setMessage] = useState("");
   const [type, setType] = useState();
+  const clickedNew = useRef(null);
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -69,8 +70,9 @@ const App = () => {
           Log out
         </button>
       </div>
-      <Togglable>
+      <Togglable ref={clickedNew} buttonLabel="New blog">
         <CreateNewBlog
+          ref={clickedNew}
           setType={setType}
           setMessage={setMessage}
           setBlogs={setBlogs}

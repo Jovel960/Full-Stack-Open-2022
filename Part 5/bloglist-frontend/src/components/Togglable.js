@@ -1,10 +1,16 @@
-import { useState } from "react";
+import { useState, forwardRef, useImperativeHandle } from "react";
 
-const Togglable = ({ children }) => {
+const Togglable = forwardRef(({ children, buttonLabel }, ref) => {
   const [visible, setVisible] = useState(false);
 
   const isVisible = { display: visible ? "block" : "none" };
   const isHidden = { display: !visible ? "block" : "none" };
+
+  useImperativeHandle(ref, () => {
+    return {
+        toggaleVisibillity
+    }
+  })
 
   const toggaleVisibillity = () => setVisible(!visible);
   return (
@@ -14,7 +20,7 @@ const Togglable = ({ children }) => {
           onClick={toggaleVisibillity}
           style={{ color: "blue", textAlign: "center", borderRadius: "8px" }}
         >
-          New Blog
+          {buttonLabel}
         </button>
       </div>
       <div style={isVisible}>
@@ -28,6 +34,6 @@ const Togglable = ({ children }) => {
       </div>
     </div>
   );
-};
+});
 
 export default Togglable;

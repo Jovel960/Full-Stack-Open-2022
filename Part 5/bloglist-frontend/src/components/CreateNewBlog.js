@@ -1,13 +1,14 @@
 import blogsService from "../services/blogs";
-import { useState } from "react";
+import { useState, forwardRef } from "react";
 
-export const CreateNewBlog = ({ setMessage, setBlogs, blogs, setType }) => {
+export const CreateNewBlog = forwardRef(({ setMessage, setBlogs, blogs, setType }, ref) => {
   const [title, setTitle] = useState("");
   const [url, setUrl] = useState("");
   const [author, setAuthor] = useState("");
 
   const createNewBlog = async (e) => {
     e.preventDefault();
+    ref.current.toggaleVisibillity();
     if (title === "" || url === "") {
         setType(false)
       setMessage("Must include url and title");
@@ -78,4 +79,4 @@ export const CreateNewBlog = ({ setMessage, setBlogs, blogs, setType }) => {
       </form>
     </div>
   );
-};
+});
