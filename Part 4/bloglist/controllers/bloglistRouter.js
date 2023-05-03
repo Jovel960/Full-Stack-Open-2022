@@ -3,42 +3,46 @@ const Blog = require("../model/bloglist");
 const config = require("../utilits/config");
 const User = require("../model/user");
 const jwt = require("jsonwebtoken");
-const middleware = require("../utilits/middleware")
+const middleware = require("../utilits/middleware");
 
 blogRouter.get("/", async (request, response) => {
   const blogs = await Blog.find({}).populate("user", { name: 1, id: 1 });
   response.json(blogs);
 });
 
-blogRouter.post("/",middleware.userExtractor, async (request, response, next) => {
-  if (!request.body.url || !request.body.title) {
-    response.status(400).end();
-  }
-  // const decodedToken = jwt.verify(request.token, process.env.SEKRET);
-  // if (!decodedToken) {
-  //   return response.status(401).json({ error: "invalid token" });
-  // }
-  if (!request.body.likes) request.body.likes = 0;
-  let body = request.body;
-  try {
-    let user = await User.findById(request.user.id);
+blogRouter.post(
+  "/",
+  middleware.userExtractor,
+  async (request, response, next) => {
+    if (!request.body.url || !request.body.title) {
+      response.status(400).end();
+    }
+    // const decodedToken = jwt.verify(request.token, process.env.SEKRET);
+    // if (!decodedToken) {
+    //   return response.status(401).json({ error: "invalid token" });
+    // }
+    if (!request.body.likes) request.body.likes = 0;
+    let body = request.body;
+    try {
+      let user = await User.findById(request.user.id);
 
-    const blog = new Blog({
-      title: body.title,
-      author: body.author,
-      url: body.url,
-      likes: body.likes,
-      user: user._id,
-    });
-    let savedBlog = await blog.save();
-    user.blogs = user.blogs.concat(savedBlog._id);
-    console.log(user.blogs, savedBlog);
-    await user.save();
-    response.status(201).json(savedBlog);
-  } catch (err) {
-    next(err);
+      const blog = new Blog({
+        title: body.title,
+        author: body.author,
+        url: body.url,
+        likes: body.likes,
+        user: user._id,
+      });
+      let savedBlog = await blog.save();
+      user.blogs = user.blogs.concat(savedBlog._id);
+      console.log(user.blogs, savedBlog);
+      await user.save();
+      response.status(201).json(savedBlog);
+    } catch (err) {
+      next(err);
+    }
   }
-});
+);
 
 blogRouter.get("/:id", async (req, res, next) => {
   try {
@@ -50,7 +54,7 @@ blogRouter.get("/:id", async (req, res, next) => {
   }
 });
 
-blogRouter.delete("/:id",middleware.userExtractor, async (req, res, next) => {
+blogRouter.delete("/:id", middleware.userExtractor, async (req, res, next) => {
   if (!req.token) {
     return res.status(401).json({ error: "Not authorized" });
   }
@@ -70,12 +74,14 @@ blogRouter.delete("/:id",middleware.userExtractor, async (req, res, next) => {
   }
 });
 
-blogRouter.put("/:id",middleware.userExtractor, async (req, res, next) => {
+blogRouter.put("/:id", middleware.userExtractor, async (req, res, next) => {
   if (!req.body) {
     return res.status(401).json({ error: "Not authorized" });
-  } else if (!req.body.url || !req.body.title) {
-    return res.status(400).end();
-  } else {
+  }
+  //else if (!req.body.url || !req.body.title) {
+  //   return res.status(400).end();
+  // }
+  else {
     try {
       let findBlog = await Blog.findById(req.params.id);
       let userToken = await jwt.verify(req.token, process.env.SEKRET);
@@ -85,10 +91,10 @@ blogRouter.put("/:id",middleware.userExtractor, async (req, res, next) => {
       }
       const body = req.body;
       const blog = {
-        author: body.author,
-        title: body.title,
-        url: body.url,
-        likes: body.likes,
+        author: findBlog.author,
+        title: findBlog.title,
+        url: findBlog.url,
+        likes: findBlog.likes + 1,
       };
       let result = await Blog.findByIdAndUpdate(req.params.id, blog, {
         new: true,

@@ -2,7 +2,7 @@ POST http://localhost:3003/api/users
 Content-Type: application/json
 
 {
-"username":"jovel",
+"username":"jovel2",
 "name":"yovel",
 "password":"1243"
 }
@@ -34,4 +34,8 @@ Content-Type: application/json
 ###
 DELETE http://localhost:3003/api/blogs/6435356791b8ec7404e042f4
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvdmVsIiwiaWQiOiI2NDMzMjEzNTZiMTUyMGFhNjFlNjFkM2QiLCJpYXQiOjE2ODEyMjY4Njh9.GEIt9v_JcU5Yd5XJrujO6UrsTSgPoYIvodRtDjgbaHo
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvdmVsIiwiaWQiOiI2NDMzMjEzNTZiMTUyMGFhNjFlNjFkM2QiLCJpYXQiOjE2ODMxNDM4NTB9.NaLFImSczOTIoWjdeDkjaRtdzQHAOBmNp8WNhSzZ-fo
+###
+PUT http://localhost:3003/api/blogs/643a90d2da090953d13f3be8
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvdmVsIiwiaWQiOiI2NDMzMjEzNTZiMTUyMGFhNjFlNjFkM2QiLCJpYXQiOjE2ODMxNDM4NTB9.NaLFImSczOTIoWjdeDkjaRtdzQHAOBmNp8WNhSzZ-fo
