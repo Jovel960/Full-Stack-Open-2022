@@ -62,7 +62,7 @@ blogRouter.delete("/:id", middleware.userExtractor, async (req, res, next) => {
     let token = await jwt.verify(req.token, process.env.SEKRET);
     let findUser = await User.findById(token.id);
     let findBlog = await Blog.findById(req.params.id);
-    if (findUser._id.toString() !== findBlog.user._id.toString()) {
+     if (findUser._id.toString() !== findBlog.user._id.toString()) {
       return res
         .status(401)
         .json({ error: "user dont have premission to delete the blog" });
@@ -85,16 +85,17 @@ blogRouter.put("/:id", middleware.userExtractor, async (req, res, next) => {
     try {
       let findBlog = await Blog.findById(req.params.id);
       let userToken = await jwt.verify(req.token, process.env.SEKRET);
-      let findUser = await User.findById(userToken.id);
-      if (findUser._id.toString() !== findBlog.user._id.toString()) {
-        return res.status(401).json({ error: "Not authorized" });
-      }
+      // let findUser = await User.findById(userToken.id);
+      // if (findUser._id.toString() !== findBlog.user._id.toString()) {
+      //   return res.status(401).json({ error: "Not authorized" });
+      // }
       const body = req.body;
       const blog = {
         author: findBlog.author,
         title: findBlog.title,
         url: findBlog.url,
         likes: findBlog.likes + 1,
+        user:findBlog.user
       };
       let result = await Blog.findByIdAndUpdate(req.params.id, blog, {
         new: true,
