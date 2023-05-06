@@ -4,6 +4,7 @@
     "supertest": "^6.3.3"
   },
   "dependencies": {
-    "jsonwebtoken": "^9.0.0"
+    "jsonwebtoken": "^9.0.0",
+    "prop-types": "^15.8.1"
   }
 }
