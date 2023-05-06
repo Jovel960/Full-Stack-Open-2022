@@ -1,9 +1,10 @@
 import Togglable from "./Togglable";
 import blogServices from "../services/blogs";
-const Blog = ({ blog }) => {
+const Blog = ({ setLiked,like, blog, setBlogs, blogs }) => {
   const likeBlog = async () => {
     try {
       await blogServices.likeBlog(blog.id);
+      setLiked(!like)
     } catch (e) {
       console.log(e);
     }
@@ -11,6 +12,7 @@ const Blog = ({ blog }) => {
   const deleteBlog = async () => {
     try {
       await blogServices.deleteBlog(blog.id);
+      setBlogs(() => blogs.filter((blogR) => blogR.id !== blog.id))
     } catch (e) {
       console.log(e);
     }
@@ -39,7 +41,7 @@ const Blog = ({ blog }) => {
           </button>
         </span>
         <p>{"Author: " + blog.author}</p>
-        <p>{"Owner: " + blog.user.name}</p>
+        <p>{"Owner: " + blog?.user?.name}</p>
       </Togglable>
     </div>
   );

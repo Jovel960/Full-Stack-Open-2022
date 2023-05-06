@@ -100,7 +100,7 @@ blogRouter.put("/:id", middleware.userExtractor, async (req, res, next) => {
       let result = await Blog.findByIdAndUpdate(req.params.id, blog, {
         new: true,
       });
-      res.status(204).json(result);
+      res.status(200).json(result);
     } catch (err) {
       next(err);
     }

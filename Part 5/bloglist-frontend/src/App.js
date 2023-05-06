@@ -12,10 +12,11 @@ const App = () => {
   const [message, setMessage] = useState("");
   const [type, setType] = useState();
   const clickedNew = useRef(null);
+  const [like, setLiked] = useState(false);
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
-  }, []);
+  }, [like]);
 
   useEffect(() => {
     const user = JSON.parse(window.localStorage.getItem("userData"));
@@ -79,9 +80,9 @@ const App = () => {
           blogs={blogs}
         />
       </Togglable>
-      {blogs.map((blog) => (
+      {blogs.sort((a,b) => b.likes - a.likes).map((blog) => (
         <div key={blog.id} style={{ flexDirection: "row" , border:"1px solid black", padding:"5px", marginTop:"3px"}}>
-            <Blog  blog={blog} />
+            <Blog like={like} setLiked={setLiked} blogs={blogs} setBlogs={setBlogs} blog={blog} />
         </div>
       ))}
     </div>
