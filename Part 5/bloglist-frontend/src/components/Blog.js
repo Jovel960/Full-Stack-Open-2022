@@ -24,15 +24,17 @@ const Blog = ({ setLiked, like, blog, setBlogs, blogs }) => {
     }
   };
   return (
-    <div style={{ flexDirection: "column", cursor: "default" }}>
+    <div className="blog" style={{ flexDirection: "column", cursor: "default" }}>
       <span
         style={{
           display: "flex",
-          alignItems: "center",
-          justifyItems: "center",
+          alignContent: "flex-start",
+          justifyContent: "flex-start",
+          flexDirection:"column"
         }}
       >
         <p>{blog.title}</p>
+       <p>{"Author: " + blog.author}</p>
         <button
           style={{
             color: "blue",
@@ -40,6 +42,7 @@ const Blog = ({ setLiked, like, blog, setBlogs, blogs }) => {
             borderRadius: "8px",
             height: "min-content",
             marginLeft: "10px",
+            width:"min-content"
           }}
           onClick={deleteBlog}
         >
@@ -70,7 +73,6 @@ const Blog = ({ setLiked, like, blog, setBlogs, blogs }) => {
             Like
           </button>
         </span>
-        <p>{"Author: " + blog.author}</p>
         <p>{"Owner: " + blog?.user?.name}</p>
       </Togglable>
     </div>
